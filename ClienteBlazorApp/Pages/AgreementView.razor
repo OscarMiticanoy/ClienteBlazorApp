@@ -1,0 +1,56 @@
+﻿@page "/agreement-view"
+@inject HttpClient http
+
+<h3>lista de Canvenios</h3>
+
+@if (agreements == null)
+{
+    <Text> cargando </Text>
+}
+else if (agreements.Count == 0)
+{
+    <Text> lista vacia </Text>
+}else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Identificacion</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var agreement in agreements)
+            {
+                <tr>
+                    <td>@agreement.id</td>
+                    <td>@agreement.name</td>
+                    <td>@agreement.description</td>
+                    <td>@agreement.amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<Agreement> agreements = new List<Agreement>();
+
+    public async Task getAgreement()
+    {
+        agreements = await http.GetJsonAsync<List<Agreement>>("https://localhost:44326/api/agreement");
+    }
+
+    public class Agreement
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public int amount { get; set; }
+
+    }
+
+}
