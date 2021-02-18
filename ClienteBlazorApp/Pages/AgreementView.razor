@@ -1,15 +1,11 @@
 ﻿@page "/agreement-view"
 @inject HttpClient http
 
-<h3>lista de Canvenios</h3>
+<h3>lista de Convenios</h3>
 
 @if (agreements == null)
 {
     <Text> cargando </Text>
-}
-else if (agreements.Count == 0)
-{
-    <Text> lista vacia </Text>
 }else
 {
     <table class="table">
