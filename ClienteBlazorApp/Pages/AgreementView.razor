@@ -1,12 +1,15 @@
 ﻿@page "/agreement-view"
 @inject HttpClient http
+@using Newtonsoft.Json
+@using Data
 
 <h3>lista de Convenios</h3>
 
 @if (agreements == null)
 {
     <Text> cargando </Text>
-}else
+}
+else
 {
     <table class="table">
         <thead>
@@ -37,16 +40,15 @@
 
     public async Task getAgreement()
     {
-        agreements = await http.GetJsonAsync<List<Agreement>>("https://localhost:44326/api/agreement");
+        var apiName = "api/agreement";
+        var httpResponse = await http.GetAsync(apiName);
+
+        if (httpResponse.IsSuccessStatusCode)
+        {
+            Response responseData = JsonConvert.DeserializeObject<Response>(await httpResponse.Content.ReadAsStringAsync());
+            agreements = responseData.agreementsList;
+            StateHasChanged();
+        }
     }
-
-    public class Agreement
-    {
-        public string id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int amount { get; set; }
-
-    }
-
 }
+

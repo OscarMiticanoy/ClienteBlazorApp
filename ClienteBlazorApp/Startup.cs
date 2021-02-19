@@ -30,7 +30,11 @@ namespace ClienteBlazorApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<HttpClient>();
+            //services.AddSingleton<HttpClient>();
+            services.AddScoped<HttpClient>(s =>
+            {
+                return new HttpClient { BaseAddress = new Uri(@"https://localhost:44326/") };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
